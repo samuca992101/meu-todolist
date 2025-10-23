@@ -1,16 +1,16 @@
-// src/app/app.ts (DEPOIS - LIMPO)
-
+// src/app/app.ts
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router'; // 1. Importe o RouterOutlet
+// 1. Importe RouterLink e RouterLinkActive
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router'; 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ RouterOutlet ], // 2. Adicione-o aqui
+  // 2. Adicione-os aos imports
+  imports: [ RouterOutlet, RouterLink, RouterLinkActive ], 
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class AppComponent {
-  // Vazio! A lógica foi movida.
-  // Você pode deixar o "title" se quiser, mas ele não é mais usado.
+  // Continua vazio
 }

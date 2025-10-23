@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // 1. Precisa importar aqui
 import { FormsModule } from '@angular/forms';   // 2. Precisa importar aqui
 import { TaskService } from '../task';           // 3. Importe o serviço (o caminho mudou para '../task')
-
+import { FilterTasksPipe } from '../filter-tasks-pipe';
 // 4. Defina a interface Task aqui
 interface Task {
   id: number;
@@ -15,7 +15,7 @@ interface Task {
 @Component({
   selector: 'app-task-list', // O selector é diferente
   standalone: true,
-  imports: [ CommonModule, FormsModule ], // 5. Adicione os imports aqui
+  imports: [ CommonModule, FormsModule,FilterTasksPipe ], // 5. Adicione os imports aqui
   templateUrl: './task-list.html',      // Aponta para seu próprio HTML
   styleUrl: './task-list.css'        // Aponta para seu próprio CSS
 })
@@ -26,7 +26,7 @@ export class TaskListComponent implements OnInit {
   public newTaskText: string = '';
   public editingTaskId: number | null = null;
   public editedTaskText: string = '';
-
+  public searchTerm: string = '';
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {

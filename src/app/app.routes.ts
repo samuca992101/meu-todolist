@@ -1,21 +1,21 @@
-// src/app/app.routes.ts
+
 import { Routes } from '@angular/router';
-// 1. Importe seu novo componente
+
 import { TaskListComponent } from './task-list/task-list'; 
+import { Home } from './home/home';
 
 export const routes: Routes = [
-    // 2. Se o usuário acessar a raiz ('/'), redirecione para '/tasks'
     { 
         path: '', 
-        redirectTo: '/tasks', 
+        redirectTo: '/home', 
         pathMatch: 'full' 
     }, 
-    
-    // 3. Se o usuário acessar '/tasks', mostre o TaskListComponent
+    {
+        path: 'home',
+        component: Home
+    },
     { 
         path: 'tasks', 
         component: TaskListComponent 
     } 
-    
-    // (Mais rotas virão aqui depois, ex: /login, /projects)
 ];

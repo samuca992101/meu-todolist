@@ -1,6 +1,4 @@
-/* src/app/app.css */
 
-/* :host é como o Angular se refere ao elemento 'app-root' */
 :host {
   display: block;
 }
