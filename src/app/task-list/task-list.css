@@ -1,208 +1,65 @@
-
-:host {
-  display: block;
-}
+/* src/app/task-list/task-list.css */
 
 .container {
-  max-width: 550px;
-  margin: 50px auto;
+  max-width: 600px;
+  margin: 40px auto;
   background-color: #ffffff;
   padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  border-radius: 12px;
+  border-radius: 16px; /* Bordas mais arredondadas */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Sombra suave e difusa */
 }
 
 .header {
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
 }
 
 .header h1 {
-  margin: 0 0 5px 0;
-  color: #2c3e50;
+  margin: 0;
+  color: #1e293b;
+  font-weight: 700;
   font-size: 28px;
 }
 
 .header p {
-  margin: 0;
-  font-size: 16px;
-  color: #7f8c8d;
+  color: #64748b;
+  margin-top: 5px;
 }
 
-.new-task-form {
-  display: flex;
-  margin-bottom: 30px;
-  gap: 10px; /* Adiciona espaço entre o input e o botão */
+.search-form {
+  margin-bottom: 25px;
 }
 
-.new-task-form input[type="text"] {
-  flex-grow: 1;
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+.search-form input {
+  width: 100%;
+  padding: 12px 15px 12px 40px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background-color: #f8fafc;
+  font-size: 15px;
+  box-sizing: border-box;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 12px center;
+  transition: all 0.2s;
 }
 
-.new-task-form input[type="text"]:focus {
+.search-form input:focus {
   outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
-}
-
-.new-task-form button {
-  padding: 12px 20px;
-  background: linear-gradient(135deg, #3498db, #2980b9);
-  color: white;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  transition: background 0.3s ease, transform 0.2s ease;
-}
-
-.new-task-form button:hover {
-  background: linear-gradient(135deg, #2980b9, #3498db);
-  transform: translateY(-2px);
-}
-
-.new-task-form button:active {
-  transform: translateY(0);
+  background-color: #fff;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
 .task-list {
-  list-style-type: none;
+  list-style: none;
   padding: 0;
   margin: 0;
 }
 
-.task-list li {
-  display: flex;
-  align-items: center;
-  padding: 15px 10px;
-  border-bottom: 1px solid #ecf0f1;
-  transition: background-color 0.2s ease;
-}
-
-.task-list li:last-child {
-  border-bottom: none;
-}
-
-.task-list li:hover {
-  background-color: #f9f9f9;
-}
-
-.task-text {
-  flex-grow: 1;
-  margin-left: 15px;
-  font-size: 17px;
-  color: #34495e;
-  transition: color 0.3s ease;
-}
-
-.task-text.completed {
-  text-decoration: line-through;
-  color: #bdc3c7;
-}
-
-/* --- Estilo do Checkbox Customizado --- */
-.checkbox-container {
-  display: block;
-  position: relative;
-  padding-left: 30px; /* Espaço para o checkmark */
-  margin-bottom: 22px; /* Apenas para alinhar, o <li> controla a altura */
-  cursor: pointer;
-  font-size: 18px;
-  user-select: none;
-  margin-top: 5px; /* Ajuste fino de alinhamento */
-}
-
-/* Esconde o checkbox original */
-.checkbox-container input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-/* Cria a "caixinha" do checkbox */
-.checkmark {
-  position: absolute;
-  top: -11px; /* Ajuste para centralizar */
-  left: 0;
-  height: 22px;
-  width: 22px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 50%; /* Deixa redondo */
-  transition: background-color 0.2s ease;
-}
-
-/* Ao passar o mouse, muda a cor de fundo */
-.checkbox-container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* Quando o checkbox está marcado, muda a cor de fundo */
-.checkbox-container input:checked ~ .checkmark {
-  background-color: #3498db;
-  border-color: #3498db;
-}
-
-/* Cria o "check" (escondido por padrão) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Mostra o "check" quando o checkbox está marcado */
-.checkbox-container input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Estiliza o "check" (é um 'L' rotacionado) */
-.checkbox-container .checkmark:after {
-  left: 8px;
-  top: 4px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg);
-}
-/* --- Fim do Estilo do Checkbox --- */
-
-
-.remove-btn {
-  background: none;
-  border: none;
-  color: #95a5a6;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s ease, color 0.2s ease;
-}
-
-.remove-btn:hover {
-  background-color: #ecf0f1;
-  color: #e74c3c;
-}
-
 .empty-message {
   text-align: center;
-  color: #95a5a6;
+  color: #94a3b8;
+  margin-top: 30px;
   font-style: italic;
-  font-size: 16px;
-  padding-top: 20px;
 }

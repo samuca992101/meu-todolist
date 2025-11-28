@@ -1,52 +1,31 @@
 <div class="container">
+  
+  <header class="header">
+    <h1>Minha Lista de Tarefas</h1>
+    <p>O que você vai fazer hoje?</p>
+  </header>
 
-    <header class="header">
-        <h1>Minha Lista de Tarefas</h1>
-        <p>O que você vai fazer hoje?</p>
-    </header>
+  <div class="search-form">
+    <input 
+      type="text" 
+      placeholder="Buscar tarefa..."
+      [(ngModel)]="searchTerm" 
+    >
+  </div>
 
-    <div class="search-form">
-        <input type="text" placeholder="Buscar tarefa..." [(ngModel)]="searchTerm">
-    </div>
+  <app-task-form (taskAdded)="addTask($event)"></app-task-form>
+  
+  <ul class="task-list">
+    <app-task-item 
+      *ngFor="let task of tasks | filterTasks:searchTerm"
+      [task]="task"
+      (remove)="removeTask($event)"
+      (edit)="handleEdit($event)"
+    >
+    </app-task-item> 
+  </ul>
 
-    <div class="new-task-form">
-        <input type="text" placeholder="Ex: Estudar Angular..." [(ngModel)]="newTaskText" (keyup.enter)="addTask()">
-        <button (click)="addTask()">
-            Adicionar <span>+</span>
-        </button>
-    </div>
-
-    <ul class="task-list">
-        <li *ngFor="let task of tasks | filterTasks:searchTerm">
-
-            <label class="checkbox-container">
-                <input type="checkbox" [(ngModel)]="task.completed">
-                <span class="checkmark"></span>
-            </label>
-
-            <span *ngIf="editingTaskId !== task.id" class="task-text" [ngClass]="{'completed': task.completed}"
-                (dblclick)="startEdit(task)">
-                {{ task.text }}
-            </span>
-
-            <input *ngIf="editingTaskId === task.id" type="text" class="task-edit-input" [(ngModel)]="editedTaskText"
-                (blur)="saveEdit(task)" (keyup.enter)="saveEdit(task)" (keyup.escape)="cancelEdit()" autofocus>
-
-            <button class="remove-btn" (click)="removeTask(task.id)">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-            </button>
-
-        </li>
-    </ul>
-
-    <p *ngIf="(tasks | filterTasks:searchTerm).length === 0" class="empty-message">
-        Nenhuma tarefa encontrada.
-    </p>
-
+  <p *ngIf="(tasks | filterTasks:searchTerm).length === 0" class="empty-message">
+    Nenhuma tarefa encontrada.
+  </p>
 </div>

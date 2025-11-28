@@ -1,12 +1,8 @@
+// src/app/filter-tasks.pipe.ts (ou filter-tasks.ts)
 
 import { Pipe, PipeTransform } from '@angular/core';
-
-
-interface Task {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+// CORREÇÃO: Importe a interface Task do arquivo central
+import { Task } from './task'; 
 
 @Pipe({
   name: 'filterTasks',
@@ -22,9 +18,7 @@ export class FilterTasksPipe implements PipeTransform {
       return tasks; // Se não há busca, retorna todas as tarefas
     }
 
-
     searchTerm = searchTerm.toLowerCase();
-
     
     return tasks.filter(task => {
       return task.text.toLowerCase().includes(searchTerm);

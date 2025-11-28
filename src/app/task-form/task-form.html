@@ -1,0 +1,41 @@
+<div class="new-task-form">
+
+  <div class="category-group" *ngIf="!isCreatingCategory">
+    <select [(ngModel)]="selectedCategoryId" class="category-select">
+      <option *ngFor="let cat of categories" [value]="cat.id">
+        {{ cat.name }}
+      </option>
+    </select>
+    
+    <button class="add-cat-btn" (click)="toggleCategoryMode()" title="Nova Categoria">
+      +
+    </button>
+  </div>
+
+  <div class="category-creation-group" *ngIf="isCreatingCategory">
+    <input 
+      type="text" 
+      placeholder="Nome da Categoria" 
+      [(ngModel)]="newCategoryName"
+      class="cat-name-input"
+    >
+    <input 
+      type="color" 
+      [(ngModel)]="newCategoryColor"
+      class="cat-color-input"
+      title="Escolher cor"
+    >
+    <button class="save-cat-btn" (click)="saveCategory()">✓</button>
+    <button class="cancel-cat-btn" (click)="toggleCategoryMode()">✕</button>
+  </div>
+
+  <input 
+    type="text" 
+    placeholder="Nova tarefa..."
+    [(ngModel)]="newTaskText"
+    (keyup.enter)="onSubmit()"
+  >
+  <button (click)="onSubmit()">
+    Adicionar <span>+</span>
+  </button>
+</div>

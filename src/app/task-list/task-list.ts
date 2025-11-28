@@ -1,68 +1,50 @@
-// src/app/task-list/task-list.ts (NOVO)
+// src/app/task-list/task-list.ts
 
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common'; // 1. Precisa importar aqui
-import { FormsModule } from '@angular/forms';   // 2. Precisa importar aqui
-import { TaskService } from '../task';           // 3. Importe o serviço (o caminho mudou para '../task')
-import { FilterTasksPipe } from '../filter-tasks-pipe';
-// 4. Defina a interface Task aqui
-interface Task {
-  id: number;
-  text: string;
-  completed: boolean;
-}
+import { CommonModule } from '@angular/common'; 
+import { FormsModule } from '@angular/forms';   
+// CORREÇÃO AQUI: Adicione ', Task' dentro das chaves
+import { TaskService, Task } from '../task';          
+import { FilterTasksPipe } from '../filter-tasks-pipe'; // Verifique se o nome do arquivo é esse mesmo
+import { TaskFormComponent } from '../task-form/task-form';
+import { TaskItemComponent } from '../task-item/task-item';
 
 @Component({
-  selector: 'app-task-list', // O selector é diferente
+  selector: 'app-task-list', 
   standalone: true,
-  imports: [ CommonModule, FormsModule,FilterTasksPipe ], // 5. Adicione os imports aqui
-  templateUrl: './task-list.html',      // Aponta para seu próprio HTML
-  styleUrl: './task-list.css'        // Aponta para seu próprio CSS
+  imports: [ CommonModule, FormsModule, FilterTasksPipe, TaskFormComponent, TaskItemComponent], 
+  templateUrl: './task-list.html',      
+  styleUrl: './task-list.css',
+          
 })
 export class TaskListComponent implements OnInit {
 
-  // ----- TODO O CÓDIGO DO TO-DO LIST VEM PRA CÁ -----
-  public tasks: Task[] = []; 
-  public newTaskText: string = '';
-  public editingTaskId: number | null = null;
-  public editedTaskText: string = '';
+  public tasks: Task[] = []; // Agora ele saberá o que é 'Task'
   public searchTerm: string = '';
+
   constructor(private taskService: TaskService) {}
 
   ngOnInit(): void {
     this.loadTasks();
   }
 
-  loadTasks(): void {
-    this.tasks = this.taskService.getTasks();
+  async loadTasks(): Promise<void> {
+    this.tasks = await this.taskService.getTasks();
   }
 
-  addTask(): void {
-    this.taskService.addTask(this.newTaskText);
-    this.newTaskText = '';
-    this.loadTasks(); 
-  }
-
-  removeTask(idToRemove: number): void {
-    this.taskService.removeTask(idToRemove);
+  async addTask(eventData: { text: string, categoryId: number }): Promise<void> {
+    // Passa os dois dados para o serviço
+    await this.taskService.addTask(eventData.text, eventData.categoryId);
     this.loadTasks();
   }
 
-  startEdit(task: Task): void {
-    this.editingTaskId = task.id;
-    this.editedTaskText = task.text;
-  }
-
-  saveEdit(task: Task): void {
-    if (!this.editingTaskId) return;
-    this.taskService.updateTask(this.editingTaskId, this.editedTaskText);
-    this.cancelEdit();
+  async removeTask(idToRemove: number): Promise<void> {
+    await this.taskService.removeTask(idToRemove);
     this.loadTasks();
   }
-
-  cancelEdit(): void {
-    this.editingTaskId = null;
-    this.editedTaskText = '';
+  
+  async handleEdit(editData: {id: number, newText: string}): Promise<void> {
+    await this.taskService.updateTask(editData.id, editData.newText);
+    this.loadTasks();
   }
-  // ----- FIM DO CÓDIGO MOVIDO -----
 }
