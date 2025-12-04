@@ -1,31 +1,32 @@
-<div class="container">
+<div class="container mt-5" style="max-width: 700px;">
   
-  <header class="header">
-    <h1>Minha Lista de Tarefas</h1>
-    <p>O que você vai fazer hoje?</p>
+  <header class="text-center mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+      <h1>Minhas Tarefas</h1>
+      <button class="btn btn-outline-danger btn-sm" (click)="onLogout()">
+        <i class="bi bi-box-arrow-right"></i> Sair
+      </button>
+    </div>
   </header>
 
-  <div class="search-form">
-    <input 
-      type="text" 
-      placeholder="Buscar tarefa..."
-      [(ngModel)]="searchTerm" 
-    >
+  <div class="input-group mb-4">
+    <span class="input-group-text"><i class="bi bi-search"></i></span>
+    <input type="text" class="form-control" placeholder="Buscar tarefa..." [(ngModel)]="searchTerm">
   </div>
 
   <app-task-form (taskAdded)="addTask($event)"></app-task-form>
   
-  <ul class="task-list">
+  <ul class="list-group shadow-sm mt-4">
     <app-task-item 
       *ngFor="let task of tasks | filterTasks:searchTerm"
       [task]="task"
       (remove)="removeTask($event)"
       (edit)="handleEdit($event)"
     >
-    </app-task-item> 
+    </app-task-item>
   </ul>
 
-  <p *ngIf="(tasks | filterTasks:searchTerm).length === 0" class="empty-message">
+  <div *ngIf="(tasks | filterTasks:searchTerm).length === 0" class="alert alert-info mt-3 text-center">
     Nenhuma tarefa encontrada.
-  </p>
+  </div>
 </div>

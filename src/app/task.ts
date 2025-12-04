@@ -14,6 +14,7 @@ export interface Task {
   text: string;
   completed: boolean;
   categoryId: number;
+  image_url?: string;
 }
 
 @Injectable({
@@ -22,10 +23,25 @@ export interface Task {
 export class TaskService {
 
   constructor() { }
+  async uploadImage(file: File): Promise<string | null> {
+  const fileName = `${Date.now()}_${file.name}`; // Gera um nome único
+  
+  const { data, error } = await supabase.storage
+    .from('task-images') // Nome do seu bucket
+    .upload(fileName, file);
 
-  // --- MÉTODOS DE LEITURA (Read) ---
+  if (error) {
+    console.error('Erro no upload:', error);
+    return null;
+  }
 
-  // Agora retorna uma Promise de um array de Tasks
+  // Pega a URL pública para salvar no banco
+  const { data: urlData } = supabase.storage
+    .from('task-images')
+    .getPublicUrl(fileName);
+
+  return urlData.publicUrl;
+}
   async getTasks(): Promise<Task[]> {
     const { data, error } = await supabase
       .from('tasks')
@@ -67,15 +83,17 @@ export class TaskService {
 
   // --- MÉTODOS DE ESCRITA (Create, Update, Delete) ---
 
-  async addTask(text: string, categoryId: number): Promise<void> {
-    // Não precisamos gerar ID, o banco faz isso!
+  async addTask(text: string, categoryId: number, imageUrl?: string): Promise<void> {
     const { error } = await supabase
       .from('tasks')
-      .insert({ text, categoryId }); // completed é false por padrão no banco
+      .insert({ 
+        text, 
+        categoryId, 
+        image_url: imageUrl // Salva a URL no banco
+      });
 
-    if (error) console.error('Erro ao adicionar tarefa:', error);
-  }
-
+  if (error) console.error('Erro ao adicionar tarefa:', error);
+}
   async addCategory(name: string, color: string): Promise<void> {
     const { error } = await supabase
       .from('categories')

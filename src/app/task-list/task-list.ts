@@ -1,13 +1,13 @@
-// src/app/task-list/task-list.ts
 
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; 
 import { FormsModule } from '@angular/forms';   
-// CORREÇÃO AQUI: Adicione ', Task' dentro das chaves
 import { TaskService, Task } from '../task';          
-import { FilterTasksPipe } from '../filter-tasks-pipe'; // Verifique se o nome do arquivo é esse mesmo
+import { FilterTasksPipe } from '../filter-tasks-pipe'; 
 import { TaskFormComponent } from '../task-form/task-form';
 import { TaskItemComponent } from '../task-item/task-item';
+
+import { AuthService } from '../auth';
 
 @Component({
   selector: 'app-task-list', 
@@ -15,14 +15,16 @@ import { TaskItemComponent } from '../task-item/task-item';
   imports: [ CommonModule, FormsModule, FilterTasksPipe, TaskFormComponent, TaskItemComponent], 
   templateUrl: './task-list.html',      
   styleUrl: './task-list.css',
-          
 })
 export class TaskListComponent implements OnInit {
 
-  public tasks: Task[] = []; // Agora ele saberá o que é 'Task'
+  public tasks: Task[] = [];
   public searchTerm: string = '';
 
-  constructor(private taskService: TaskService) {}
+  constructor(
+    private taskService: TaskService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadTasks();
@@ -32,9 +34,8 @@ export class TaskListComponent implements OnInit {
     this.tasks = await this.taskService.getTasks();
   }
 
-  async addTask(eventData: { text: string, categoryId: number }): Promise<void> {
-    // Passa os dois dados para o serviço
-    await this.taskService.addTask(eventData.text, eventData.categoryId);
+  async addTask(eventData: { text: string, categoryId: number, imageUrl: string }): Promise<void> {
+    await this.taskService.addTask(eventData.text, eventData.categoryId, eventData.imageUrl);
     this.loadTasks();
   }
 
@@ -46,5 +47,9 @@ export class TaskListComponent implements OnInit {
   async handleEdit(editData: {id: number, newText: string}): Promise<void> {
     await this.taskService.updateTask(editData.id, editData.newText);
     this.loadTasks();
+  }
+
+  async onLogout(): Promise<void> {
+    await this.authService.signOut();
   }
 }

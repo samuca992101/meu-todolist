@@ -1,41 +1,35 @@
-<div class="new-task-form">
-
-  <div class="category-group" *ngIf="!isCreatingCategory">
-    <select [(ngModel)]="selectedCategoryId" class="category-select">
-      <option *ngFor="let cat of categories" [value]="cat.id">
-        {{ cat.name }}
-      </option>
-    </select>
+<div class="card bg-light border-0">
+  <div class="card-body p-2">
     
-    <button class="add-cat-btn" (click)="toggleCategoryMode()" title="Nova Categoria">
-      +
-    </button>
-  </div>
+    <div *ngIf="isCreatingCategory" class="d-flex gap-2 mb-2">
+      <input type="text" class="form-control form-control-sm" placeholder="Nome" [(ngModel)]="newCategoryName">
+      <input type="color" class="form-control form-control-color form-control-sm" [(ngModel)]="newCategoryColor">
+      <button class="btn btn-success btn-sm" (click)="saveCategory()"><i class="bi bi-check"></i></button>
+      <button class="btn btn-secondary btn-sm" (click)="toggleCategoryMode()"><i class="bi bi-x"></i></button>
+    </div>
 
-  <div class="category-creation-group" *ngIf="isCreatingCategory">
-    <input 
-      type="text" 
-      placeholder="Nome da Categoria" 
-      [(ngModel)]="newCategoryName"
-      class="cat-name-input"
-    >
-    <input 
-      type="color" 
-      [(ngModel)]="newCategoryColor"
-      class="cat-color-input"
-      title="Escolher cor"
-    >
-    <button class="save-cat-btn" (click)="saveCategory()">✓</button>
-    <button class="cancel-cat-btn" (click)="toggleCategoryMode()">✕</button>
-  </div>
+    <div class="input-group">
+      <button *ngIf="!isCreatingCategory" class="btn btn-outline-secondary" type="button" (click)="toggleCategoryMode()">
+        <i class="bi bi-plus"></i>
+      </button>
+      
+      <select *ngIf="!isCreatingCategory" [(ngModel)]="selectedCategoryId" class="form-select" style="max-width: 130px;">
+        <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+      </select>
 
-  <input 
-    type="text" 
-    placeholder="Nova tarefa..."
-    [(ngModel)]="newTaskText"
-    (keyup.enter)="onSubmit()"
-  >
-  <button (click)="onSubmit()">
-    Adicionar <span>+</span>
-  </button>
+      <label class="btn btn-outline-secondary">
+        <i class="bi bi-paperclip"></i>
+        <input type="file" (change)="onFileSelected($event)" hidden>
+      </label>
+
+      <input type="text" class="form-control" placeholder="Nova tarefa..." [(ngModel)]="newTaskText" (keyup.enter)="onSubmit()">
+      
+      <button class="btn btn-primary" (click)="onSubmit()">Adicionar</button>
+    </div>
+    
+    <small *ngIf="selectedFile" class="text-success ms-2">
+      <i class="bi bi-image"></i> Imagem selecionada
+    </small>
+
+  </div>
 </div>

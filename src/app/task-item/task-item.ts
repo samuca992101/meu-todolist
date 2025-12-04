@@ -1,4 +1,3 @@
-// src/app/task-item/task-item.ts
 
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -26,7 +25,6 @@ export class TaskItemComponent implements OnInit {
 
   constructor(private taskService: TaskService) {}
 
-  // Carrega a categoria de forma assíncrona
   async ngOnInit(): Promise<void> {
     if (this.task && this.task.categoryId) {
       this.category = await this.taskService.getCategoryById(this.task.categoryId);
@@ -54,8 +52,6 @@ export class TaskItemComponent implements OnInit {
   onRemoveClick(): void {
     this.remove.emit(this.task.id);
   }
-
-  // Método assíncrono para o checkbox
   async onCheckboxChange(): Promise<void> {
     await this.taskService.toggleCompleted(this.task.id, this.task.completed);
   }
